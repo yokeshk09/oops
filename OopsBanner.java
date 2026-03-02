@@ -3,78 +3,69 @@ import java.util.Map;
 
 public class OopsBanner {
 
-    // Static Inner Class to encapsulate character and pattern
-    static class CharacterPattern {
-        private char character;
-        private String[] pattern;
-
-        public CharacterPattern(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
-
-        public char getCharacter() {
-            return character;
-        }
-
-        public String[] getPattern() {
-            return pattern;
-        }
-    }
-
-    // Centralized Character Pattern Map
-    private static final Map<Character, CharacterPattern> patternMap = new HashMap<>();
-
-    static {
-        patternMap.put('O', new CharacterPattern('O', new String[]{
-                " ***** ",
-                "*     *",
-                "*     *",
-                "*     *",
-                " ***** "
-        }));
-
-        patternMap.put('P', new CharacterPattern('P', new String[]{
-                "****** ",
-                "*     *",
-                "****** ",
-                "*      ",
-                "*      "
-        }));
-        patternMap.put('S', new CharacterPattern('S', new String[]{
-                " ***** ",
-                "*      ",
-                " ***** ",
-                "      *",
-                " ***** "
-        }));
-    }
+    // Centralized pattern storage
+    private static final Map<Character, String[]> patternMap = new HashMap<>();
 
     public static void main(String[] args) {
 
-        String word = "OOPS";
-        int height = 5;
+        // Initialize patterns
+        initializePatterns();
 
-        StringBuilder[] banner = new StringBuilder[height];
+        // Render banner word
+        renderBanner("OOPS");
+    }
 
-        for (int i = 0; i < height; i++) {
-            banner[i] = new StringBuilder();
-        }
+    // Initialize all character patterns
+    private static void initializePatterns() {
 
-        for (char ch : word.toCharArray()) {
-            CharacterPattern cp = patternMap.get(ch);
+        patternMap.put('O', new String[]{
+                " ***  ",
+                "*   * ",
+                "*   * ",
+                "*   * ",
+                " ***  "
+        });
 
-            if (cp != null) {
-                String[] pattern = cp.getPattern();
+        patternMap.put('P', new String[]{
+                "****  ",
+                "*   * ",
+                "****  ",
+                "*     ",
+                "*     "
+        });
 
-                for (int i = 0; i < height; i++) {
-                    banner[i].append(pattern[i]).append("   ");
+        patternMap.put('S', new String[]{
+                " **** ",
+                "*     ",
+                " ***  ",
+                "     *",
+                "****  "
+        });
+    }
+
+    // Render banner using nested loops
+    private static void renderBanner(String text) {
+
+        text = text.toUpperCase();
+
+        int height = 5; // Each pattern has 5 rows
+
+        for (int row = 0; row < height; row++) {
+
+            for (int col = 0; col < text.length(); col++) {
+
+                char currentChar = text.charAt(col);
+
+                String[] pattern = patternMap.get(currentChar);
+
+                if (pattern != null) {
+                    System.out.print(pattern[row] + "  ");
+                } else {
+                    System.out.print("       ");
                 }
             }
-        }
 
-        for (StringBuilder line : banner) {
-            System.out.println(line);
+            System.out.println();
         }
     }
 }
